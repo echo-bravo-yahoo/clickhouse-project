@@ -1,9 +1,8 @@
-import * as expressModule from "express";
-const { default: express } = expressModule;
+import express from "express";
 
-import { getCredit, postCredit, putCredit } from "./handlers/credit";
-import { getPurchases, postPurchases } from "./handlers/purchases";
-import { postRefund } from "./handlers/refund";
+import { getCredit, postCredit, putCredit } from "./handlers/credit.js";
+import { getPurchases, postPurchases } from "./handlers/purchases.js";
+import { postRefund } from "./handlers/refund.js";
 
 const app = express();
 const port = 3000;
