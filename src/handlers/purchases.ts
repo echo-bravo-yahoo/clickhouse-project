@@ -1,68 +1,44 @@
-import type { Response, Request } from "express";
+import { v7 as uuid } from "uuid";
 
-interface GetPurchasesRequest {}
+import { InternalPurchases, db } from "../db.js";
 
-interface GetPurchasesResponse {
-  balance: number;
-  etag: string;
-}
+import type {
+  GetPurchasesHandler,
+  PostPurchasesHandler,
+} from "./purchases.types.js";
+import {
+  isGetPurchasesRequest,
+  isPostPurchasesRequest,
+} from "./purchases.types.js";
 
-interface GetPurchasesHandler {
-  (
-    req: Request<GetPurchasesRequest>,
-    res: Response<GetPurchasesResponse>
-  ): void;
-}
-
-function isGetPurchasesRequest(
-  req: Request<any>
-): req is Request<GetPurchasesRequest> {
-  return true;
-}
-
-export const getPurchases: GetPurchasesHandler = (req, res) => {
+export const getPurchases: GetPurchasesHandler = async (req, res) => {
   if (!isGetPurchasesRequest(req)) throw new Error(`Invalid input.`);
 
-  res.json({
-    balance: 0,
-    etag: "",
-  });
+  const purchases = db.chain
+    .get("purchases")
+    .find({ customerId: req.params.customerId })
+    .value();
+
+  if (purchases === undefined)
+    throw new Error(`Purchase history not found for user.`);
+
+  res.json(purchases);
 };
 
-interface PostPurchasesRequest {
-  adjustment: number;
-  etag?: string;
-}
-
-interface PostPurchasesResponse {
-  balance: number;
-  etag: string;
-}
-
-interface PostPurchasesHandler {
-  (
-    req: Request<PostPurchasesRequest>,
-    res: Response<PostPurchasesResponse>
-  ): void;
-}
-
-function isPostPurchasesRequest(
-  req: Request<any>
-): req is Request<PostPurchasesRequest> {
-  return (
-    req &&
-    req.body &&
-    req.body.adjustment !== undefined &&
-    typeof req.body.adjustment === "number" &&
-    (req.body.etag === undefined || typeof req.body.etag === "string")
-  );
-}
-
-export const postPurchases: PostPurchasesHandler = (req, res) => {
+export const postPurchases: PostPurchasesHandler = async (req, res) => {
   if (!isPostPurchasesRequest(req)) throw new Error(`Invalid input.`);
 
-  res.json({
-    balance: 0,
-    etag: "",
-  });
+  const purchase: InternalPurchases = {
+    id: uuid(),
+    customerId: req.params.customerId,
+    total: 0,
+    products: [],
+    shipment: {},
+    tax: 0,
+    events: [],
+    timestamp: Date.now(),
+  };
+  db.update(({ purchases }) => purchases.push(purchase));
+
+  res.status(200).send();
 };

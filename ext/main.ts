@@ -14,8 +14,8 @@ const port = 3001;
 // parse application/json
 app.use(bodyParser.json());
 
-app.get("/customers/:id", getCustomer);
-app.get("/products/:id", getProduct);
+app.get("/customers/:customerId", getCustomer);
+app.get("/products/:productId", getProduct);
 app.post("/shipments", postShipment);
 
 await db.read();

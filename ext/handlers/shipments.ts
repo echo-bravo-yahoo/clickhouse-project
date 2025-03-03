@@ -1,33 +1,10 @@
-import type { Response, Request } from "express";
 import type { Shipment } from "../db.js";
+import type { PostShipmentHandler } from "./shipments.types.js";
 
-import _ from "lodash";
 import { v7 as uuid } from "uuid";
 
 import { db } from "../db.js";
-
-interface PostShipmentRequestBody {
-  customerId: string;
-}
-interface PostShipmentResponseBody {}
-interface PostShipmentResponse extends Response<PostShipmentResponseBody, {}> {}
-interface PostShipmentRequest
-  extends Request<
-    {},
-    PostShipmentResponseBody,
-    PostShipmentRequestBody,
-    {},
-    {}
-  > {}
-interface PostShipmentHandler {
-  (req: PostShipmentRequest, res: PostShipmentResponse): void;
-}
-
-function isPostShipmentRequest(
-  req: Request<any>
-): req is Request<PostShipmentRequest> {
-  return req && req.body;
-}
+import { isPostShipmentRequest } from "./shipments.types.js";
 
 export const postShipment: PostShipmentHandler = async (req, res) => {
   if (!isPostShipmentRequest(req)) throw new Error(`Invalid input.`);
@@ -35,7 +12,6 @@ export const postShipment: PostShipmentHandler = async (req, res) => {
   const shipment: Shipment = {
     ...req.body,
     id: uuid(),
-    timestamp: Date.now(),
   };
 
   await db.update((data) => {

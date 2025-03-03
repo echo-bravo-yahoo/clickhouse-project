@@ -1,36 +1,12 @@
-import type { Response, Request } from "express";
+import { isPostRefundRequest } from "./refund.types.js";
+import type { PostRefundHandler } from "./refund.types.js";
 
-interface PostRefundRequest {
-  adjustment: number;
-  etag?: string;
-}
+// import { db } from "../db.js";
 
-interface PostRefundResponse {
-  balance: number;
-  etag: string;
-}
-
-interface PostRefundHandler {
-  (req: Request<PostRefundRequest>, res: Response<PostRefundResponse>): void;
-}
-
-function isPostRefundRequest(
-  req: Request<any>
-): req is Request<PostRefundRequest> {
-  return (
-    req &&
-    req.body &&
-    req.body.adjustment !== undefined &&
-    typeof req.body.adjustment === "number" &&
-    (req.body.etag === undefined || typeof req.body.etag === "string")
-  );
-}
-
-export const postRefund: PostRefundHandler = (req, res) => {
+export const postRefund: PostRefundHandler = async (req, res) => {
   if (!isPostRefundRequest(req)) throw new Error(`Invalid input.`);
 
-  res.json({
-    balance: 0,
-    etag: "",
-  });
+  const refund = {};
+  // db.update(({ purchases }) => purchases.push(purchase));
+  res.json({ balance: 0 });
 };

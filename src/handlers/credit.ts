@@ -1,97 +1,84 @@
-import type { Response, Request } from "express";
+import type {
+  CreditResponseBody,
+  GetCreditHandler,
+  PostCreditHandler,
+  PutCreditHandler,
+} from "./credit.types.js";
+import {
+  isGetCreditRequest,
+  isPostCreditRequest,
+  isPutCreditRequest,
+} from "./credit.types.js";
 
-interface GetCreditRequest {}
+import { db } from "../db.js";
 
-interface GetCreditResponse {
-  balance: number;
-  etag: string;
+function validateTransaction(customerId: string) {
+  const credit = db.chain.get("credits").find({ customerId }).value();
+
+  if (credit === undefined)
+    throw new Error(`Credit balance not found for user.`);
+
+  return credit;
 }
 
-interface GetCreditHandler {
-  (req: Request<GetCreditRequest>, res: Response<GetCreditResponse>): void;
-}
+const recordTransaction = async ({
+  customerId,
+  balance,
+  adjustment,
+}: {
+  customerId: string;
+  balance?: number;
+  adjustment?: number;
+}) => {
+  const credit = validateTransaction(customerId);
 
-function isGetCreditRequest(
-  req: Request<any>
-): req is Request<GetCreditRequest> {
-  return true;
-}
+  let newBalance;
+  if (balance !== undefined && adjustment !== undefined) {
+    throw new Error(`Invalid input.`);
+  } else if (balance !== undefined) {
+    newBalance = balance;
+  } else if (adjustment !== undefined) {
+    newBalance = credit.balance + adjustment;
+  } else {
+    throw new Error(`Invalid input.`);
+  }
 
-export const getCredit: GetCreditHandler = (req, res) => {
+  const diff = newBalance - credit.balance;
+
+  credit.balance = newBalance;
+  credit.events.push({
+    diff,
+    timestamp: Date.now(),
+  });
+  await db.write();
+
+  return { balance: credit.balance } as CreditResponseBody;
+};
+
+export const getCredit: GetCreditHandler = async (req, res) => {
   if (!isGetCreditRequest(req)) throw new Error(`Invalid input.`);
 
-  res.json({
-    balance: 0,
-    etag: "",
-  });
+  res.json(validateTransaction(req.params.customerId));
 };
 
-interface PostCreditRequest {
-  adjustment: number;
-  etag?: string;
-}
-
-interface PostCreditResponse {
-  balance: number;
-  etag: string;
-}
-
-interface PostCreditHandler {
-  (req: Request<PostCreditRequest>, res: Response<PostCreditResponse>): void;
-}
-
-function isPostCreditRequest(
-  req: Request<any>
-): req is Request<PostCreditRequest> {
-  return (
-    req &&
-    req.body &&
-    req.body.adjustment !== undefined &&
-    typeof req.body.adjustment === "number" &&
-    (req.body.etag === undefined || typeof req.body.etag === "string")
-  );
-}
-
-export const postCredit: PostCreditHandler = (req, res) => {
+export const postCredit: PostCreditHandler = async (req, res) => {
   if (!isPostCreditRequest(req)) throw new Error(`Invalid input.`);
 
-  res.json({
-    balance: 0,
-    etag: "",
-  });
+  res.json(
+    await recordTransaction({
+      customerId: req.params.customerId,
+      adjustment: req.body.adjustment,
+    })
+  );
 };
 
-function isPutCreditRequest(
-  req: Request<any>
-): req is Request<PutCreditRequest> {
-  return (
-    req &&
-    req.body &&
-    req.body.balance !== undefined &&
-    typeof req.body.balance === "number" &&
-    (req.body.etag === undefined || typeof req.body.etag === "string")
-  );
-}
-
-interface PutCreditRequest {
-  balance: number;
-  etag?: string;
-}
-
-interface PutCreditResponse {
-  balance: number;
-  etag: string;
-}
-
-interface PutCreditHandler {
-  (req: Request<PutCreditRequest>, res: Response<PutCreditResponse>): void;
-}
-
-export const putCredit: PutCreditHandler = (req, res) => {
+export const putCredit: PutCreditHandler = async (req, res) => {
   if (!isPutCreditRequest(req)) throw new Error(`Invalid input.`);
 
-  res.json({
-    balance: req.body.balance,
-    etag: "",
-  });
+  res.json(
+    await recordTransaction({
+      customerId: req.params.customerId,
+      balance: req.body.balance,
+    })
+  );
 };
