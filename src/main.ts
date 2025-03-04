@@ -5,10 +5,10 @@ import { db } from "./db.js";
 import { getCredit, postCredit, putCredit } from "./handlers/credit.js";
 import { getPurchases, postPurchases } from "./handlers/purchases.js";
 import { postRefund } from "./handlers/refund.js";
-import { frontendPort } from "./config/config.js";
+import { frontend } from "./config/config.js";
 
 const app = express();
-const port = frontendPort;
+const port = frontend.port;
 
 // parse application/json
 app.use(bodyParser.json());
@@ -26,5 +26,7 @@ app.post("/customers/:customerId/refund", postRefund);
 await db.read();
 
 app.listen(port, () => {
-  console.log(`Frontend server listening on port ${port}`);
+  console.log(
+    `Frontend server listening on port ${port} with initial data:\n${JSON.stringify(db.data, null, 2)}`
+  );
 });

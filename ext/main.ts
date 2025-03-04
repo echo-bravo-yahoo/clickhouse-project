@@ -1,15 +1,14 @@
-import * as expressModule from "express";
-const { default: express } = expressModule;
-import * as bodyParserModule from "body-parser";
-const { default: bodyParser } = bodyParserModule;
+import express from "express";
+import bodyParser from "body-parser";
 
 import { db } from "./db.js";
 import { getCustomer } from "./handlers/customers.js";
 import { getProduct } from "./handlers/products.js";
 import { postShipment } from "./handlers/shipments.js";
+import { backend } from "./config/config.js";
 
 const app = express();
-const port = 3001;
+const port = backend.port;
 
 // parse application/json
 app.use(bodyParser.json());
@@ -22,6 +21,6 @@ await db.read();
 
 app.listen(port, () => {
   console.log(
-    `External API stub listening on port ${port} with initial data:\n${JSON.stringify(db.data, null, 2)}`
+    `Backend server stub listening on port ${port} with initial data:\n${JSON.stringify(db.data, null, 2)}`
   );
 });

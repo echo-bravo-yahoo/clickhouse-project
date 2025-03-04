@@ -5,7 +5,8 @@ import {
   PostShipmentResponseBody,
 } from "./sdk.types";
 
-import { backendURL } from "./config/config.js";
+import { backend } from "./config/config.js";
+const backendURL = `${backend.protocol}://${backend.url}:${backend.port}`;
 
 export async function getCustomer({ id }: { id: string }) {
   const response = await fetch(`${backendURL}/customers/${id}`);
