@@ -15,7 +15,7 @@
     "watch:ext": "tsc-watch --noClear --onSuccess \"node ./tmp/build/ext/main.js\"",
     "watch:src": "tsc-watch --noClear --onSuccess \"node ./tmp/build/src/main.js\"",
     "build": "tsc --build --verbose",
-    "build:src": "tsc --project .",
+    "build:src": "tsc --project src",
     "build:ext": "tsc --project ext",
     "clean": "rm -rf ./tmp/*",
     "clean:src": "rm -rf ./tmp/build/src/*",
