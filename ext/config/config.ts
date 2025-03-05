@@ -9,3 +9,4 @@ export const frontend = {
   url: "localhost",
   port: "3000",
 };
+export const databaseFilePath = "./tmp/runtime/ext/db.json";

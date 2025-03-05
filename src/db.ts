@@ -2,7 +2,7 @@ import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
 import lodash from "lodash";
 
-import { defaultDataPath } from "./config/config.js";
+import { databaseFilePath, defaultDataPath } from "./config/config.js";
 
 // Extend Low class with a new `chain` field
 class LowWithLodash<T> extends Low<T> {
@@ -43,6 +43,6 @@ export interface Database {
   purchases: InternalPurchases[];
 }
 
-const adapter = new JSONFile<Database>("./tmp/db.json");
+const adapter = new JSONFile<Database>(databaseFilePath);
 const defaultData = (await import(defaultDataPath)).default;
 export const db = new LowWithLodash(adapter, defaultData);
