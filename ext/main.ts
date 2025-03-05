@@ -6,6 +6,7 @@ import { getCustomer } from "./handlers/customers.js";
 import { getProduct } from "./handlers/products.js";
 import { postShipment } from "./handlers/shipments.js";
 import { backend } from "./config/config.js";
+import { errorHandler } from "./errorHandling.js";
 
 const app = express();
 const port = backend.port;
@@ -16,6 +17,8 @@ app.use(bodyParser.json());
 app.get("/customers/:customerId", getCustomer);
 app.get("/products/:productId", getProduct);
 app.post("/shipments", postShipment);
+
+app.use(errorHandler);
 
 await db.read();
 

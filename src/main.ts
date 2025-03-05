@@ -6,6 +6,7 @@ import { getCredit, postCredit, putCredit } from "./handlers/credit.js";
 import { getPurchases, postPurchases } from "./handlers/purchases.js";
 import { postRefund } from "./handlers/refund.js";
 import { frontend } from "./config/config.js";
+import { errorHandler } from "./errorHandling.js";
 
 const app = express();
 const port = frontend.port;
@@ -22,6 +23,8 @@ app.post("/customers/:customerId/purchases", postPurchases);
 app.get("/customers/:customerId/purchases", getPurchases);
 
 app.post("/customers/:customerId/refund", postRefund);
+
+app.use(errorHandler);
 
 await db.read();
 
