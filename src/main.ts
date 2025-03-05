@@ -14,6 +14,11 @@ const port = frontend.port;
 // parse application/json
 app.use(bodyParser.json());
 
+const fs = await import("node:fs");
+const path = await import("node:path");
+fs.mkdirSync(path.dirname(databaseFilePath), { recursive: true });
+await db.read();
+
 // TODO: these don't break the build if a path param is missing
 app.get("/customers/:customerId/credit", getCredit);
 app.post("/customers/:customerId/credit", postCredit);

@@ -5,6 +5,11 @@ import type {
   PostShipmentResponseBody,
 } from "../src/sdk.types.js";
 
+const __dirname = import.meta.dirname;
+const projectRoot = path.join(__dirname, "../../..");
+import fs from "node:fs";
+import path from "node:path";
+
 import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
 import lodash from "lodash";
@@ -28,6 +33,10 @@ export interface Database {
 }
 
 const adapter = new JSONFile<Database>(databaseFilePath);
-const defaultData = (await import(defaultDataPath)).default;
+const defaultData: Database = JSON.parse(
+  fs.readFileSync(path.join(projectRoot, "/ext/", defaultDataPath), {
+    encoding: "utf8",
+  })
+);
 
 export const db = new LowWithLodash(adapter, defaultData);

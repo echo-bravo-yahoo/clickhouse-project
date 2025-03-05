@@ -1,22 +1,29 @@
-import { Customer, Database, Product, Shipment } from "../db";
+#!/usr/bin/env tsx
+
+import type { Customer, Database, Product, Shipment } from "../db";
+
+const __dirname = import.meta.dirname;
+
+import fs from "node:fs";
+import path from "node:path";
+
 import { faker } from "@faker-js/faker";
 
 // by using a seeded RNG, the output is consistent across runs
 faker.seed(38492);
 
-export const data: Database = {
+const data: Database = {
   customers: [],
   products: [],
   shipments: [],
 };
 
-data.customers = iterate(buildTestCustomer, { min: 2, max: 6 });
-data.products = iterate(buildTestProduct, { min: 8, max: 10 });
-data.shipments = iterate(buildTestShipment, { min: 2, max: 6 });
+data.customers = iterate(buildTestCustomer, 3);
+data.products = iterate(buildTestProduct, 5);
+data.shipments = iterate(buildTestShipment, 2);
 
-function iterate<T>(fn: () => T, range: { min: number; max: number }) {
+function iterate<T>(fn: () => T, count: number) {
   const array = [];
-  const count = faker.number.int(range);
   for (let i = 0; i < count; i++) {
     array.push(fn());
   }
@@ -55,7 +62,7 @@ function buildTestProduct(): Product {
     sku: faker.string.numeric({ allowLeadingZeros: false, length: 12 }),
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
-    price: faker.number.float({ fractionDigits: 2 }),
+    price: faker.number.float({ min: 4, max: 500, fractionDigits: 2 }),
     createdAt: Math.floor(faker.date.past().getTime() / 1000),
     lastModifiedAt: Math.floor(faker.date.past().getTime() / 1000),
   };
@@ -68,7 +75,7 @@ function buildTestShipment(): Shipment {
   const customer = faker.helpers.arrayElement(data.customers);
   const products = faker.helpers.arrayElements(data.products, {
     min: 1,
-    max: 4,
+    max: 3,
   });
 
   const skus = products.map((product) => {
@@ -85,4 +92,8 @@ function buildTestShipment(): Shipment {
   };
 }
 
-export default data;
+fs.writeFileSync(
+  path.join(__dirname, "../config/sampleData.json"),
+  JSON.stringify(data, null, 2),
+  { encoding: "utf8" }
+);

@@ -1,0 +1,160 @@
+{
+  "customers": [
+    {
+      "id": "761d7ad4-c1a1-4fc4-96b4-1f546b8afe02",
+      "name": "Kyle Walter",
+      "billingAddress": {
+        "line1": "3135 Lina Harbor",
+        "line2": "Apt. 950",
+        "city": "North Taureanstead",
+        "postalCode": "07401",
+        "state": "Pennsylvania",
+        "country": "Djibouti"
+      },
+      "shippingAddress": {
+        "line1": "67536 Colt Knoll",
+        "line2": "Suite 366",
+        "city": "DuBuquefurt",
+        "postalCode": "45736",
+        "state": "Rhode Island",
+        "country": "Palestine"
+      },
+      "email": "Ila.Quitzon91@gmail.com",
+      "createdAt": 1739218486,
+      "lastModifiedAt": 1731270872
+    },
+    {
+      "id": "a6035c3d-0ccb-4994-b139-86801c114085",
+      "name": "Susie Ledner",
+      "billingAddress": {
+        "line1": "89963 Hall Lane",
+        "line2": "Suite 333",
+        "city": "Fort Sageshire",
+        "postalCode": "52974",
+        "state": "Colorado",
+        "country": "Bulgaria"
+      },
+      "shippingAddress": {
+        "line1": "48645 Roob Islands",
+        "line2": "Apt. 966",
+        "city": "Des Moines",
+        "postalCode": "99336",
+        "state": "Mississippi",
+        "country": "Thailand"
+      },
+      "email": "Alexandria.Ortiz76@hotmail.com",
+      "createdAt": 1723847913,
+      "lastModifiedAt": 1721126041
+    },
+    {
+      "id": "8ab0a9f2-3dd9-4a12-bb4c-d5fb772376b9",
+      "name": "Eduardo Dach",
+      "billingAddress": {
+        "line1": "954 Kertzmann Square",
+        "line2": "Suite 973",
+        "city": "Kiehnboro",
+        "postalCode": "44186",
+        "state": "Michigan",
+        "country": "Kiribati"
+      },
+      "shippingAddress": {
+        "line1": "430 Emmie Knoll",
+        "line2": "Suite 412",
+        "city": "Cullentown",
+        "postalCode": "21521",
+        "state": "Iowa",
+        "country": "Mozambique"
+      },
+      "email": "Ena_Blanda@gmail.com",
+      "createdAt": 1711639470,
+      "lastModifiedAt": 1726338004
+    }
+  ],
+  "products": [
+    {
+      "id": "1695dcf4-c3db-4a45-a3c5-15a5cc91a024",
+      "sku": "890009706015",
+      "name": "Elegant Granite Pants",
+      "description": "Savor the crunchy essence in our Pizza, designed for neat culinary adventures",
+      "price": 213.81,
+      "createdAt": 1723144152,
+      "lastModifiedAt": 1727244395
+    },
+    {
+      "id": "3ba3129e-1a7b-4393-94bb-c1339239cc61",
+      "sku": "747592892460",
+      "name": "Sleek Concrete Shoes",
+      "description": "Savor the juicy essence in our Salad, designed for exalted culinary adventures",
+      "price": 182.04,
+      "createdAt": 1724268075,
+      "lastModifiedAt": 1709790642
+    },
+    {
+      "id": "d21212bf-838c-40bb-8038-fd49e991cc18",
+      "sku": "564872858441",
+      "name": "Awesome Bronze Gloves",
+      "description": "Our cow-friendly Bacon ensures tasty comfort for your pets",
+      "price": 103.47,
+      "createdAt": 1730523981,
+      "lastModifiedAt": 1735154278
+    },
+    {
+      "id": "c4b931db-b169-42eb-ab77-3eb0c50e858f",
+      "sku": "709610277655",
+      "name": "Luxurious Steel Towels",
+      "description": "Discover the brilliant new Salad with an exciting mix of Steel ingredients",
+      "price": 236.3,
+      "createdAt": 1725852048,
+      "lastModifiedAt": 1720648137
+    },
+    {
+      "id": "ebf48ba4-2e55-400e-af3b-dd50eb35fa5d",
+      "sku": "499365161835",
+      "name": "Incredible Marble Cheese",
+      "description": "Featuring Germanium-enhanced technology, our Table offers unparalleled perky performance",
+      "price": 280.99,
+      "createdAt": 1717968156,
+      "lastModifiedAt": 1724122671
+    }
+  ],
+  "shipments": [
+    {
+      "id": "5eb29c3f-4660-4ae1-a7d3-0366ab1b09e8",
+      "shippingAddress": {
+        "line1": "48645 Roob Islands",
+        "line2": "Apt. 966",
+        "city": "Des Moines",
+        "postalCode": "99336",
+        "state": "Mississippi",
+        "country": "Thailand"
+      },
+      "products": [
+        {
+          "sku": "890009706015",
+          "quantity": 7
+        }
+      ]
+    },
+    {
+      "id": "926851e7-b2f7-4e8c-8423-89d932c5b7c8",
+      "shippingAddress": {
+        "line1": "48645 Roob Islands",
+        "line2": "Apt. 966",
+        "city": "Des Moines",
+        "postalCode": "99336",
+        "state": "Mississippi",
+        "country": "Thailand"
+      },
+      "products": [
+        {
+          "sku": "709610277655",
+          "quantity": 3
+        },
+        {
+          "sku": "747592892460",
+          "quantity": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-export const defaultDataPath = "./config/sampleData.js";
+export const defaultDataPath = "./config/sampleData.json";
 export const backend = {
   protocol: "http",
   url: "localhost",

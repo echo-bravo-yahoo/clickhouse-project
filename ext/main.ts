@@ -20,6 +20,9 @@ app.post("/shipments", postShipment);
 
 app.use(errorHandler);
 
+const fs = await import("node:fs");
+const path = await import("node:path");
+fs.mkdirSync(path.dirname(databaseFilePath), { recursive: true });
 await db.read();
 
 const server = app.listen(port, () => {
@@ -43,9 +46,6 @@ function cleanup(signal: string) {
   console.log(`${signal} signal received. Now refusing new connections.`);
   server.close(async () => {
     console.log("All server connections closed.");
-    const fs = await import("node:fs");
-    const path = await import("node:path");
-    fs.mkdirSync(path.dirname(databaseFilePath), { recursive: true });
     await db.write();
     console.log("Database writes flushed.");
     console.log("Server shut down. Goodbye.");
