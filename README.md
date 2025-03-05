@@ -1,30 +1,46 @@
-In Typescript, please design and implement a simple e-commerce server that exposes the following operations:
+# clickhouse readme
 
-- Grant/deduct credit balance
-  - `POST /credit`
-  - `PUT /credit`
-- Get a customer’s credit balance
-  - `GET /credit`
-- Purchase a product
-  - `POST /purchases`
-  - As part of this operation, call CreateShipment to send the customer the product they just bought.
-  - If the CreateShipment call fails, the purchase should not be saved, customer credit should not be deducted and the caller should get an error message.
-- List product purchases
-  - `GET /purchases`
-- Refund a purchase (fully or partially)
-  - `POST /refund`
+this document serves as a summary of the way this project is organized, quick guides to common tasks, and a log of decisions made while building it.
 
-Please also design the data structure for the purchase and credit entities (and any other additional entities you see fit) and manage them end-to-end (CRUD). For your testing, I recommend you mock the API that serves you Customers, Products and Shipments.
+## quickstart
 
-Notes:
+- build the project with `npm run build`
+- run it with `npm run start`
+- run the dev server in watch mode with `npm run watch`
 
-- Please use types in your TS code. You don’t have to use ESlint, but try to include return types on functions and generally avoid `any`.
-  - API requests and responses should have explicitly defined interfaces.
-- Since this system handles billing data, consider the data model’s auditability and the importance of historical record keeping. For example: the ability to tell when credit balances changed and for what reason.
-- If any additional components are required to run your code (databases, message brokers, etc.), please include a docker or docker compose file to run them in a container.
-  - Assume node.js, npm, yarn and docker are installed
-- Your thought process matters. If you have to ignore or sidestep something you’d normally address, please explain why you did and how you’d approach it in real life.
+## organization
 
-- If you implement the Customer, Product and Shipment APIs to make testing easier, please remember it’s an external API and not an internal part of your system.
-  - Reading Customer and Product data - for example in the “Purchase a product” call - should be done over an API call, not directly from your persistence layer
-  - Creating shipments should be done using an API call, not directly into your persistence layer
+the project is split into two major parts, a stubbed backend server (in `./ext`) and an implemented frontend server (in `./src`). for expedience, they share dependencies (package.json, node_modules), but can be built and run independently. if a given file, e.g., `foo.ts` has a significant number of types, look for `foo.types.ts` for type definitions.
+
+- _clickhouse_
+  - _ext_
+    - _config_, a directory for config parameters and sample data
+    - _handlers_, a directory for business logic implementation
+    - db.ts, tools for interacting with the lowdb persistence layer
+    - errorHandling.ts, tools for creating and handling express errors
+    - main.ts, the entrypoint for the server
+    - _scripts_, ops/CI/management scripts; run with `tsx`
+    - tsconfig.json, specific overrides from the tsconfig-base.json for this ts project
+  - _node_modules_, shared dependencies for both `./ext` and `./src`
+  - _src_, the directory for the frontend; it includes all the same parts as ext, as well as:
+    - sdk.ts, tools for calling the backend (`./ext`) server
+  - _tmp_, build and runtime artifacts
+    - _build_, build artifacts
+      - _src_
+        - buildinfo, a typescript project buildinfo file to allow for partial recompilation
+      - _ext_
+    - _runtime_, runtime db files
+      - _src_
+      - _ext_
+  - tsconfig.json
+
+## UP NEXT:
+
+- [ ] end-to-end testing of everything pre-purchase
+- [ ] implementing purchasing
+- [ ] logging
+- [ ] rate-limiting
+- [ ] test harness ('functional' / integ)
+- [x] documentation & notes
+- [ ] eslint file included (and eslint package.json scripts)
+- [ ] postman-esque collection for manual testing
