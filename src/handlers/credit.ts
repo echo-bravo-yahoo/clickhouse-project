@@ -4,12 +4,15 @@ import type {
   PostCreditHandler,
   PutCreditHandler,
 } from "./credit.types.js";
+import type { InternalCredit } from "../db.js";
+
+import { v7 as uuid } from "uuid";
+
 import {
   isGetCreditRequest,
   isPostCreditRequest,
   isPutCreditRequest,
 } from "./credit.types.js";
-
 import { db } from "../db.js";
 
 function validateTransaction(customerId: string) {
@@ -25,12 +28,30 @@ const recordTransaction = async ({
   customerId,
   balance,
   adjustment,
+  requireAccountExists = true,
 }: {
   customerId: string;
   balance?: number;
   adjustment?: number;
+  requireAccountExists?: boolean;
 }) => {
-  const credit = validateTransaction(customerId);
+  let credit: InternalCredit | undefined;
+  try {
+    credit = validateTransaction(customerId);
+  } catch (e) {
+    if (requireAccountExists) {
+      throw e;
+    } else {
+      credit = {
+        id: uuid(),
+        balance: 0,
+        timestamp: Date.now(),
+        customerId,
+        events: [],
+      };
+      db.data.credits.push(credit);
+    }
+  }
 
   let newBalance;
   if (balance !== undefined && adjustment !== undefined) {
@@ -79,6 +100,7 @@ export const putCredit: PutCreditHandler = async (req, res) => {
     await recordTransaction({
       customerId: req.params.customerId,
       balance: req.body.balance,
+      requireAccountExists: false,
     })
   );
 };

@@ -23,6 +23,8 @@ export interface ExternalCredit {
   balance: number;
 }
 
+export type InternalCredit = ExternalCredit & Persistable & Auditable;
+
 interface Product {}
 interface Shipment {}
 
@@ -37,7 +39,7 @@ export interface ExternalPurchase {
 export type InternalPurchases = ExternalPurchase & Auditable;
 
 export interface Database {
-  credits: (ExternalCredit & Persistable & Auditable)[];
+  credits: InternalCredit[];
   purchases: InternalPurchases[];
 }
 
