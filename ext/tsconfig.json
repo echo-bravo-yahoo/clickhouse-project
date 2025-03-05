@@ -1,12 +1,9 @@
 {
-  "extends": "../src/tsconfig.json",
+  "extends": "../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "../tmp/build/ext",
     "rootDir": ".",
-    "composite": true,
-    "rootDirs": ["../src", "../ext"],
-    "incremental": true,
-    "tsBuildInfoFile": "../tmp/extbuildinfo"
+    "tsBuildInfoFile": "../tmp/build/ext/buildinfo"
   },
   "references": [{ "path": "../src" }]
 }
