@@ -16,7 +16,7 @@ interface Persistable {
 
 interface Auditable extends Persistable {
   customerId: string;
-  events: any[];
+  events: [];
 }
 
 export interface ExternalCredit {
@@ -36,7 +36,7 @@ export interface ExternalPurchaseProduct {
 export interface InternalPurchaseProduct extends ExternalPurchaseProduct {
   id: string;
 }
-interface Shipment {}
+type Shipment = unknown;
 
 export interface ExternalPurchase {
   id: string;

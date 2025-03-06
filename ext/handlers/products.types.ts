@@ -2,23 +2,20 @@ import type { Response, Request } from "express";
 import type { Product } from "../db.js";
 
 type GetProductRequestBody = undefined;
-interface GetProductResponseBody extends Product {}
-interface GetProductResponse extends Response<GetProductResponseBody, {}> {}
-interface GetProductRequest
-  extends Request<
-    { productId: string },
-    GetProductResponseBody,
-    GetProductRequestBody,
-    {},
-    {}
-  > {}
+type GetProductResponseBody = Product;
+type GetProductResponse = Response<GetProductResponseBody, object>;
+type GetProductRequest = Request<
+  { productId: string },
+  GetProductResponseBody,
+  GetProductRequestBody,
+  Record<string, never>,
+  object
+>;
 
 export interface GetProductHandler {
   (req: GetProductRequest, res: GetProductResponse): void;
 }
 
-export function isGetProductRequest(
-  req: Request<any>
-): req is GetProductRequest {
+export function isGetProductRequest(req: Request): req is GetProductRequest {
   return req && req.params && typeof req.params.productId === "string";
 }

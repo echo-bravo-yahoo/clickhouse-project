@@ -4,22 +4,21 @@ import type {
   PostShipmentResponseBody,
 } from "../../src/sdk.types";
 
-interface PostShipmentResponse extends Response<PostShipmentResponseBody, {}> {}
-interface PostShipmentRequest
-  extends Request<
-    {},
-    PostShipmentResponseBody,
-    PostShipmentRequestBody,
-    {},
-    {}
-  > {}
+type PostShipmentResponse = Response<PostShipmentResponseBody, object>;
+type PostShipmentRequest = Request<
+  Record<string, never>,
+  PostShipmentResponseBody,
+  PostShipmentRequestBody,
+  Record<string, never>,
+  object
+>;
 
 export interface PostShipmentHandler {
   (req: PostShipmentRequest, res: PostShipmentResponse): void;
 }
 
 function isProduct(
-  maybeProduct: any
+  maybeProduct: any // eslint-disable-line @typescript-eslint/no-explicit-any
 ): maybeProduct is { sku: string; quantity: number } {
   return (
     maybeProduct &&
@@ -31,7 +30,7 @@ function isProduct(
 }
 
 export function isPostShipmentRequest(
-  req: Request<any>
+  req: Request
 ): req is PostShipmentRequest {
   return (
     req &&

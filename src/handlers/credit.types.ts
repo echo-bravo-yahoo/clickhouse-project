@@ -7,19 +7,18 @@ export interface CreditResponseBody {
 
 // GET /customers/:customerId/credit
 type GetCreditRequestBody = undefined;
-interface GetCreditResponse extends Response<CreditResponseBody, {}> {}
-interface GetCreditRequest
-  extends Request<
-    { customerId: string },
-    CreditResponseBody,
-    GetCreditRequestBody,
-    {},
-    {}
-  > {}
+type GetCreditResponse = Response<CreditResponseBody, object>;
+type GetCreditRequest = Request<
+  { customerId: string },
+  CreditResponseBody,
+  GetCreditRequestBody,
+  Record<string, never>,
+  object
+>;
 export interface GetCreditHandler {
   (req: GetCreditRequest, res: GetCreditResponse): Promise<void>;
 }
-export function isGetCreditRequest(req: Request<any>): req is GetCreditRequest {
+export function isGetCreditRequest(req: Request): req is GetCreditRequest {
   return req && req.params && typeof req.params.customerId === "string";
 }
 
@@ -27,21 +26,18 @@ export function isGetCreditRequest(req: Request<any>): req is GetCreditRequest {
 interface PostCreditRequestBody {
   adjustment: number;
 }
-interface PostCreditResponse extends Response<CreditResponseBody, {}> {}
-interface PostCreditRequest
-  extends Request<
-    { customerId: string },
-    CreditResponseBody,
-    PostCreditRequestBody,
-    {},
-    {}
-  > {}
+type PostCreditResponse = Response<CreditResponseBody, object>;
+type PostCreditRequest = Request<
+  { customerId: string },
+  CreditResponseBody,
+  PostCreditRequestBody,
+  Record<string, never>,
+  object
+>;
 export interface PostCreditHandler {
   (req: PostCreditRequest, res: PostCreditResponse): Promise<void>;
 }
-export function isPostCreditRequest(
-  req: Request<any>
-): req is PostCreditRequest {
+export function isPostCreditRequest(req: Request): req is PostCreditRequest {
   return (
     req &&
     req.body &&
@@ -55,19 +51,18 @@ export function isPostCreditRequest(
 interface PutCreditRequestBody {
   balance: number;
 }
-interface PutCreditResponse extends Response<CreditResponseBody, {}> {}
-interface PutCreditRequest
-  extends Request<
-    { customerId: string },
-    CreditResponseBody,
-    PutCreditRequestBody,
-    {},
-    {}
-  > {}
+type PutCreditResponse = Response<CreditResponseBody, object>;
+type PutCreditRequest = Request<
+  { customerId: string },
+  CreditResponseBody,
+  PutCreditRequestBody,
+  Record<string, never>,
+  object
+>;
 export interface PutCreditHandler {
   (req: PutCreditRequest, res: PutCreditResponse): Promise<void>;
 }
-export function isPutCreditRequest(req: Request<any>): req is PutCreditRequest {
+export function isPutCreditRequest(req: Request): req is PutCreditRequest {
   return (
     req &&
     req.body &&

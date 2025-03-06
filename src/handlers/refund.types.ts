@@ -8,22 +8,19 @@ interface PostRefundRequestBody {
 interface PostRefundResponseBody {
   adjustment: number;
 }
-interface PostRefundResponse extends Response<PostRefundResponseBody, {}> {}
-interface PostRefundRequest
-  extends Request<
-    { customerId: string },
-    PostRefundResponseBody,
-    PostRefundRequestBody,
-    {},
-    {}
-  > {}
+type PostRefundResponse = Response<PostRefundResponseBody, object>;
+type PostRefundRequest = Request<
+  { customerId: string },
+  PostRefundResponseBody,
+  PostRefundRequestBody,
+  Record<string, never>,
+  object
+>;
 export interface PostRefundHandler {
   (req: PostRefundRequest, res: PostRefundResponse): Promise<void>;
 }
 
-export function isPostRefundRequest(
-  req: Request<any>
-): req is PostRefundRequest {
+export function isPostRefundRequest(req: Request): req is PostRefundRequest {
   return (
     req &&
     req.body &&

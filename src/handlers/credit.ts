@@ -22,7 +22,7 @@ export async function determineCurrentCredit(
 ) {
   try {
     await validateBackendState(customerId);
-  } catch (e) {
+  } catch (_e) {
     throw new Error(`User not found`);
   }
 
@@ -49,7 +49,7 @@ export async function determineCurrentCredit(
 async function validateBackendState(customerId: string) {
   try {
     await getCustomer({ id: customerId });
-  } catch (e) {
+  } catch (_e) {
     throw new Error(`Customer does not exist.`);
   }
 }

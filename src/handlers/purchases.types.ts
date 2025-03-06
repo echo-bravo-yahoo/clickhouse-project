@@ -7,22 +7,21 @@ import type {
 
 type GetPurchasesRequestBody = undefined;
 type GetPurchasesResponseBody = ExternalPurchase[];
-interface GetPurchasesResponse extends Response<GetPurchasesResponseBody, {}> {}
-interface GetPurchasesRequest
-  extends Request<
-    { customerId: string },
-    GetPurchasesResponseBody,
-    GetPurchasesRequestBody,
-    {},
-    {}
-  > {}
+type GetPurchasesResponse = Response<GetPurchasesResponseBody, object>;
+type GetPurchasesRequest = Request<
+  { customerId: string },
+  GetPurchasesResponseBody,
+  GetPurchasesRequestBody,
+  Record<string, never>,
+  object
+>;
 
 export interface GetPurchasesHandler {
   (req: GetPurchasesRequest, res: GetPurchasesResponse): Promise<void>;
 }
 
 export function isGetPurchasesRequest(
-  req: Request<any>
+  req: Request
 ): req is GetPurchasesRequest {
   return req && req.params && typeof req.params.customerId === "string";
 }
@@ -53,23 +52,21 @@ interface PostPurchasesRequestBody {
   shippingAddress: Address;
 }
 type PostPurchasesResponseBody = ExternalPurchase;
-interface PostPurchasesResponse
-  extends Response<PostPurchasesResponseBody, {}> {}
-interface PostPurchasesRequest
-  extends Request<
-    { customerId: string },
-    PostPurchasesResponseBody,
-    PostPurchasesRequestBody,
-    {},
-    {}
-  > {}
+type PostPurchasesResponse = Response<PostPurchasesResponseBody, object>;
+type PostPurchasesRequest = Request<
+  { customerId: string },
+  PostPurchasesResponseBody,
+  PostPurchasesRequestBody,
+  Record<string, never>,
+  object
+>;
 
 export interface PostPurchasesHandler {
   (req: PostPurchasesRequest, res: PostPurchasesResponse): Promise<void>;
 }
 
 export function isPostPurchasesRequest(
-  req: Request<any>
+  req: Request
 ): req is PostPurchasesRequest {
   return (
     req &&

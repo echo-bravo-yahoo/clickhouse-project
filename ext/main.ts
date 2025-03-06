@@ -5,7 +5,7 @@ import { db } from "./db.js";
 import { getCustomer } from "./handlers/customers.js";
 import { getProduct } from "./handlers/products.js";
 import { postShipment } from "./handlers/shipments.js";
-import { backend, databaseFilePath, frontend } from "./config/config.js";
+import { backend, databaseFilePath } from "./config/config.js";
 import { errorHandler } from "./errorHandling.js";
 
 const app = express();

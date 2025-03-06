@@ -42,5 +42,5 @@ the project is split into two major parts, a stubbed backend server (in `./ext`)
 - [ ] rate-limiting
 - [ ] test harness ('functional' / integ)
 - [x] documentation & notes
-- [ ] eslint file included (and eslint package.json scripts)
+- [x] eslint file included (and eslint package.json scripts)
 - [ ] postman-esque collection for manual testing

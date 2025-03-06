@@ -81,7 +81,7 @@ export const postPurchases: PostPurchasesHandler = async (req, res) => {
     });
 
     products = await Promise.all(productPromises);
-  } catch (e) {
+  } catch (_e) {
     throw new Error(`Product not found.`);
   }
   const preTaxTotal = products.reduce(
@@ -117,7 +117,7 @@ export const postPurchases: PostPurchasesHandler = async (req, res) => {
 
     shipmentResponse = await postShipment(payload);
     if (shipmentResponse.id === undefined) throw new Error("");
-  } catch (e) {
+  } catch (_e) {
     throw new Error(`Error creating shipment.`);
   }
 

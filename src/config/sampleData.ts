@@ -2,6 +2,7 @@ import type { Database, InternalCredit, InternalPurchases } from "../db";
 import type {
   Shipment as BackendShipments,
   GetCustomerResponseBody as BackendCustomer,
+  Product as BackendProduct,
 } from "../sdk.types.js";
 
 const __dirname = import.meta.dirname;
@@ -26,7 +27,7 @@ const data: Database = {
 };
 
 function buildTestCredits(): InternalCredit[] {
-  return extData.customers.map((customer: any) => {
+  return (extData.customers as BackendCustomer[]).map((customer) => {
     return {
       id: faker.string.uuid(),
       customerId: customer.id as string,
@@ -42,8 +43,8 @@ function buildTestPurchases(): InternalPurchases[] {
   // consistent purchase for each shipment
   return (extData.shipments as BackendShipments[]).map((shipment) => {
     const products = shipment.products.map((shippedProduct) => {
-      const matchedSku = extData.products.find(
-        (product: any) => product.sku === shippedProduct.sku
+      const matchedSku = (extData.products as BackendProduct[]).find(
+        (product) => product.sku === shippedProduct.sku
       );
       return {
         ...matchedSku,
