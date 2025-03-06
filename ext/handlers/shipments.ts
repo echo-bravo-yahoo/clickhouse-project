@@ -18,5 +18,7 @@ export const postShipment: PostShipmentHandler = async (req, res) => {
     data.shipments.push(shipment);
   });
 
-  res.status(200).send();
+  res.status(200).json({
+    id: shipment.id,
+  });
 };

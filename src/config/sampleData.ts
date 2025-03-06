@@ -1,4 +1,8 @@
 import type { Database, InternalCredit, InternalPurchases } from "../db";
+import type {
+  Shipment as BackendShipments,
+  GetCustomerResponseBody as BackendCustomer,
+} from "../sdk.types.js";
 
 const __dirname = import.meta.dirname;
 import fs from "node:fs";
@@ -36,30 +40,38 @@ function buildTestCredits(): InternalCredit[] {
 function buildTestPurchases(): InternalPurchases[] {
   // since we have shipment test data, let's go backwards and make an internally
   // consistent purchase for each shipment
-  return extData.shipments.map((shipment: any) => {
-    const products = shipment.products.map((shippedProduct: any) => {
-      return extData.products.find(
+  return (extData.shipments as BackendShipments[]).map((shipment) => {
+    const products = shipment.products.map((shippedProduct) => {
+      const matchedSku = extData.products.find(
         (product: any) => product.sku === shippedProduct.sku
       );
+      return {
+        ...matchedSku,
+        quantity: shippedProduct.quantity,
+      };
     });
-    const preTaxCost = products.reduce(
-      (sum: number, product: any) => sum + product.price,
+    const preTaxTotal = products.reduce(
+      (sum: number, product) => sum + product.price * product.quantity,
       0
     );
-    const tax = faker.number.float({
-      min: preTaxCost,
-      max: 1.4 * preTaxCost,
+    const taxRate = faker.number.float({
+      min: 0,
+      max: 0.4,
       multipleOf: 0.01,
     });
+    const tax = taxRate * preTaxTotal;
     return {
       id: faker.string.uuid(),
-      customerId: (faker.helpers.arrayElement(extData.customers) as any)
-        .id as string,
+      customerId: faker.helpers.arrayElement(
+        extData.customers as BackendCustomer[]
+      ).id,
       timestamp: Math.floor(faker.date.past().getTime() / 1000),
-      total: preTaxCost + tax,
+      preTaxTotal,
+      taxRate,
+      total: preTaxTotal + tax,
       tax,
-      products: [],
-      shipment: {},
+      products: products,
+      shipment: { id: shipment.id },
       events: [],
     } as InternalPurchases;
   });

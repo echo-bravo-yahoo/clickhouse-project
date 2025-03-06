@@ -1,14 +1,22 @@
 import type { Response, Request } from "express";
+import { ExternalPurchaseProduct } from "../db";
 
 interface PostRefundRequestBody {
-  adjustment: number;
+  purchaseId: string;
+  itemsToRefund: ExternalPurchaseProduct[];
 }
 interface PostRefundResponseBody {
-  balance: number;
+  adjustment: number;
 }
 interface PostRefundResponse extends Response<PostRefundResponseBody, {}> {}
 interface PostRefundRequest
-  extends Request<{}, PostRefundResponseBody, PostRefundRequestBody, {}, {}> {}
+  extends Request<
+    { customerId: string },
+    PostRefundResponseBody,
+    PostRefundRequestBody,
+    {},
+    {}
+  > {}
 export interface PostRefundHandler {
   (req: PostRefundRequest, res: PostRefundResponse): Promise<void>;
 }
@@ -19,7 +27,9 @@ export function isPostRefundRequest(
   return (
     req &&
     req.body &&
-    typeof req.body.adjustment === "number" &&
+    typeof req.body.purchaseId === "string" &&
+    // TODO: replace with real type guard
+    req.body.itemsToRefund.length !== undefined &&
     req.params &&
     typeof req.params.customerId === "string"
   );

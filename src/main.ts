@@ -27,7 +27,7 @@ app.put("/customers/:customerId/credit", putCredit);
 app.post("/customers/:customerId/purchases", postPurchases);
 app.get("/customers/:customerId/purchases", getPurchases);
 
-app.post("/customers/:customerId/refund", postRefund);
+app.post("/customers/:customerId/refunds", postRefund);
 
 app.use(errorHandler);
 

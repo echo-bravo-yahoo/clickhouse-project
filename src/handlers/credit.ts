@@ -14,33 +14,23 @@ import {
   isPutCreditRequest,
 } from "./credit.types.js";
 import { db } from "../db.js";
+import { getCustomer } from "../sdk.js";
 
-function validateTransaction(customerId: string) {
-  const credit = db.chain.get("credits").find({ customerId }).value();
-
-  if (credit === undefined)
-    throw new Error(`Credit balance not found for user.`);
-
-  return credit;
-}
-
-const recordTransaction = async ({
-  customerId,
-  balance,
-  adjustment,
-  requireAccountExists = true,
-}: {
-  customerId: string;
-  balance?: number;
-  adjustment?: number;
-  requireAccountExists?: boolean;
-}) => {
-  let credit: InternalCredit | undefined;
+export async function determineCurrentCredit(
+  customerId: string,
+  requireAccountExists: boolean = true
+) {
   try {
-    credit = validateTransaction(customerId);
+    await validateBackendState(customerId);
   } catch (e) {
+    throw new Error(`User not found`);
+  }
+
+  let credit = db.chain.get("credits").find({ customerId }).value();
+
+  if (credit === undefined) {
     if (requireAccountExists) {
-      throw e;
+      throw new Error(`Credit balance not found for user.`);
     } else {
       credit = {
         id: uuid(),
@@ -53,6 +43,22 @@ const recordTransaction = async ({
     }
   }
 
+  return credit;
+}
+
+async function validateBackendState(customerId: string) {
+  try {
+    await getCustomer({ id: customerId });
+  } catch (e) {
+    throw new Error(`Customer does not exist.`);
+  }
+}
+
+export async function adjustBalance(
+  credit: InternalCredit,
+  balance?: number,
+  adjustment?: number
+) {
   let newBalance;
   if (balance !== undefined && adjustment !== undefined) {
     throw new Error(`Invalid input.`);
@@ -66,12 +72,31 @@ const recordTransaction = async ({
 
   const diff = newBalance - credit.balance;
 
+  if (newBalance < 0)
+    throw new Error(
+      `Insufficient credit balance of ${credit.balance} while attempting to adjust by ${adjustment}.`
+    );
   credit.balance = newBalance;
   credit.events.push({
     diff,
     timestamp: Date.now(),
   });
   await db.write();
+}
+
+const recordTransaction = async ({
+  customerId,
+  balance,
+  adjustment,
+  requireAccountExists,
+}: {
+  customerId: string;
+  balance?: number;
+  adjustment?: number;
+  requireAccountExists?: boolean;
+}) => {
+  const credit = await determineCurrentCredit(customerId, requireAccountExists);
+  await adjustBalance(credit, balance, adjustment);
 
   return { balance: credit.balance } as CreditResponseBody;
 };
@@ -79,7 +104,8 @@ const recordTransaction = async ({
 export const getCredit: GetCreditHandler = async (req, res) => {
   if (!isGetCreditRequest(req)) throw new Error(`Invalid input.`);
 
-  res.json(validateTransaction(req.params.customerId));
+  const { balance } = await determineCurrentCredit(req.params.customerId);
+  res.json({ balance });
 };
 
 export const postCredit: PostCreditHandler = async (req, res) => {

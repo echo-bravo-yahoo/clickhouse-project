@@ -20,6 +20,7 @@ export async function getProduct({ id }: { id: string }) {
 
 export async function postShipment(shipment: PostShipmentRequestBody) {
   const response = await fetch(`${backendURL}/shipments`, {
+    headers: { "Content-Type": "application/json" },
     method: "POST",
     body: JSON.stringify(shipment),
   });

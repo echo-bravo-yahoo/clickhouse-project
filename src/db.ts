@@ -25,18 +25,31 @@ export interface ExternalCredit {
 
 export type InternalCredit = ExternalCredit & Persistable & Auditable;
 
-interface Product {}
+export interface ExternalPurchaseProduct {
+  quantity: number;
+  sku: string;
+  price: number;
+  name: string;
+  description: string;
+}
+
+export interface InternalPurchaseProduct extends ExternalPurchaseProduct {
+  id: string;
+}
 interface Shipment {}
 
 export interface ExternalPurchase {
   id: string;
+  preTaxTotal: number;
+  taxRate: number;
   total: number;
-  products: Product[];
+  products: ExternalPurchaseProduct[];
   shipment: Shipment;
   tax: number;
 }
 
-export type InternalPurchases = ExternalPurchase & Auditable;
+export type InternalPurchases = ExternalPurchase &
+  Auditable & { products: InternalPurchaseProduct[] };
 
 export interface Database {
   credits: InternalCredit[];

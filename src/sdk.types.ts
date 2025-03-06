@@ -22,7 +22,8 @@ export interface GetCustomerResponseBody {
   lastModifiedAt: number;
 }
 
-export interface GetProductResponseBody {
+export type GetProductResponseBody = Product;
+export interface Product {
   id: string;
   sku: string;
   name: string;
@@ -31,6 +32,13 @@ export interface GetProductResponseBody {
   createdAt: number;
   lastModifiedAt: number;
 }
+
+export interface ProductPurchase {
+  sku: string;
+  quantity: number;
+}
+
+export type Shipment = PostShipmentRequestBody & PostShipmentResponseBody;
 
 export interface PostShipmentRequestBody {
   shippingAddress: {
@@ -41,7 +49,7 @@ export interface PostShipmentRequestBody {
     state: string;
     country: string;
   };
-  products: Array<{ sku: string; quantity: number }>;
+  products: ProductPurchase[];
 }
 
 export interface PostShipmentResponseBody {
