@@ -7,10 +7,11 @@ this document serves as a summary of the way this project is organized, quick gu
 - build the project with `npm run build`
 - run it with `npm run start`
 - run the dev server in watch mode with `npm run watch`
+- to test, start the server and run `npm run test`
 
 ## organization
 
-the project is split into two major parts, a stubbed backend server (in `./ext`) and an implemented frontend server (in `./src`). for expedience, they share dependencies (package.json, node_modules), but can be built and run independently. if a given file, e.g., `foo.ts` has a significant number of types, look for `foo.types.ts` for type definitions.
+the project is split into two major parts, a stubbed backend server (in `./ext`) and an implemented frontend server (in `./src`). for expedience, they share dependencies (package.json, node_modules), but can be built and run independently. if a given file, e.g., `foo.ts`, has a significant number of types, look for `foo.types.ts` for type definitions.
 
 - _clickhouse_
   - _ext_
@@ -23,7 +24,8 @@ the project is split into two major parts, a stubbed backend server (in `./ext`)
     - tsconfig.json, specific overrides from the tsconfig-base.json for this ts project
   - _node_modules_, shared dependencies for both `./ext` and `./src`
   - _src_, the directory for the frontend; it includes all the same parts as ext, as well as:
-    - _sdk.ts_, tools for calling the frontend (`./src`) and backend (`./ext`) servers
+    - _sdk_, tools for calling the frontend (`./src`) and backend (`./ext`) servers
+  - _test_
   - _tmp_, build and runtime artifacts
     - _build_, build artifacts
       - _src_
@@ -32,15 +34,18 @@ the project is split into two major parts, a stubbed backend server (in `./ext`)
     - _runtime_, runtime db files
       - _src_
       - _ext_
+  - README.md, this file
+  - PROMPT.md, the initial prompt
+  - curlCookbook.md, a set of example curl commands for manual usage of the frontend and backend APIs
   - tsconfig.json
 
-## UP NEXT:
+## what do i wish i had time to do?
 
-- [ ] end-to-end testing of everything pre-purchase
-- [ ] implementing purchasing
-- [ ] logging
-- [ ] rate-limiting
-- [ ] test harness ('functional' / integ)
-- [x] documentation & notes
-- [x] eslint file included (and eslint package.json scripts)
-- [ ] postman-esque collection for manual testing
+- auth middleware, even if the logic/implementation is a placeholder
+- broader test suite (test spec names included as examples)
+- logging
+- rate-limiting
+- better error representations; currently, all errors are served as 500s
+- better 404 handling; customers are still served the express default HTML 404
+- refactor `./ext` => `backend` and `./src` => `frontend` for clarity
+- move SDKs into a third TS project, with both frontend and backend depending on them
