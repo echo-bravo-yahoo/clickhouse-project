@@ -70,17 +70,17 @@ export async function adjustBalance(
     throw new Error(`Invalid input.`);
   }
 
-  const diff = newBalance - credit.balance;
+  // const diff = newBalance - credit.balance;
 
   if (newBalance < 0)
     throw new Error(
       `Insufficient credit balance of ${credit.balance} while attempting to adjust by ${adjustment}.`
     );
   credit.balance = newBalance;
-  credit.events.push({
-    diff,
-    timestamp: Date.now(),
-  });
+  // credit.events.push({
+  //   diff,
+  //   timestamp: Date.now(),
+  // });
   await db.write();
 }
 

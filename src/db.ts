@@ -59,3 +59,4 @@ export interface Database {
 const adapter = new JSONFile<Database>(databaseFilePath);
 const defaultData = (await import(defaultDataPath)).default;
 export const db = new LowWithLodash(adapter, defaultData);
+export default db;

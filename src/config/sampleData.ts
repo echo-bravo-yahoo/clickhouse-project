@@ -10,13 +10,13 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { faker } from "@faker-js/faker";
+import { RichPurchaseProduct } from "../handlers/purchases.types";
 
 // by using a seeded RNG, the output is consistent across runs
 faker.seed(38492);
 
-const projectRoot = path.join(__dirname, "../../../..");
 const extData = JSON.parse(
-  fs.readFileSync(path.join(projectRoot, "./ext/config/sampleData.json"), {
+  fs.readFileSync(path.join(__dirname, "../../ext/config/sampleData.json"), {
     encoding: "utf8",
   })
 );
@@ -49,7 +49,7 @@ function buildTestPurchases(): InternalPurchases[] {
       return {
         ...matchedSku,
         quantity: shippedProduct.quantity,
-      };
+      } as RichPurchaseProduct;
     });
     const preTaxTotal = products.reduce(
       (sum: number, product) => sum + product.price * product.quantity,

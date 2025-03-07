@@ -6,7 +6,6 @@ import type {
 } from "../src/sdk/ext.types.js";
 
 const __dirname = import.meta.dirname;
-const projectRoot = path.join(__dirname, "../../..");
 import fs from "node:fs";
 import path from "node:path";
 
@@ -34,9 +33,10 @@ export interface Database {
 
 const adapter = new JSONFile<Database>(databaseFilePath);
 const defaultData: Database = JSON.parse(
-  fs.readFileSync(path.join(projectRoot, "/ext/", defaultDataPath), {
+  fs.readFileSync(path.join(__dirname, defaultDataPath), {
     encoding: "utf8",
   })
 );
 
 export const db = new LowWithLodash(adapter, defaultData);
+export default db;

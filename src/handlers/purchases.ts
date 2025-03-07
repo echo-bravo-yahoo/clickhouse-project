@@ -63,6 +63,7 @@ function simplifyRichProduct(
     description: product.description,
   };
 }
+
 export const postPurchases: PostPurchasesHandler = async (req, res) => {
   if (!isPostPurchasesRequest(req)) throw new Error(`Invalid input.`);
 
