@@ -7,7 +7,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run build && mocha",
     "start": "npm-run-all --parallel --print-label start:**",
     "start:ext": "node ./tmp/build/ext/main.js",
     "start:src": "node ./tmp/build/src/main.js",
@@ -34,11 +34,14 @@
     "@faker-js/faker": "^9.5.1",
     "@types/express": "^5.0.0",
     "@types/lodash": "^4.17.16",
+    "@types/mocha": "^10.0.10",
     "eslint": "^9.21.0",
     "globals": "^16.0.0",
+    "mocha": "^11.1.0",
     "npm-run-all": "^4.1.5",
     "ts-node": "^10.9.2",
     "tsc-watch": "^6.2.1",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.0"
   }
