@@ -4,9 +4,16 @@ import { GetPurchasesResponseBody, PostPurchasesRequestBody } from "../handlers/
 import { PostRefundRequestBody, PostRefundResponseBody } from "../handlers/refund.types.js";
 const frontendURL = `${frontend.protocol}://${frontend.url}:${frontend.port}`;
 
+async function processResponse<T>(response: Response): Promise<T> {
+  if (response.status >= 400) {
+    throw new Error((await response.json()).message)
+  }
+  return response.json() as Promise<T>;
+}
+
 export async function getCredit({ id }: { id: string }) {
   const response = await fetch(`${frontendURL}/customers/${id}/credit`);
-  return response.json() as Promise<GetCreditResponse>;
+  return processResponse<GetCreditResponse>(response)
 }
 
 export async function postCredit({ id, credit }: { id: string, credit: PostCreditRequestBody }) {
@@ -15,7 +22,7 @@ export async function postCredit({ id, credit }: { id: string, credit: PostCredi
     method: "POST",
     body: JSON.stringify(credit),
   });
-  return response.json() as Promise<PostCreditResponse>;
+  return processResponse<PostCreditResponse>(response);
 }
 
 export async function putCredit({ id, credit }: { id: string, credit: PutCreditRequestBody }) {
@@ -24,12 +31,12 @@ export async function putCredit({ id, credit }: { id: string, credit: PutCreditR
     method: "PUT",
     body: JSON.stringify(credit),
   });
-  return response.json() as Promise<PutCreditResponse>;
+  return processResponse<PutCreditResponse>(response);
 }
 
 export async function getPurchases({ id }: { id: string }) {
   const response = await fetch(`${frontendURL}/products/${id}/purchases`);
-  return response.json() as Promise<GetPurchasesResponseBody>;
+  return processResponse<GetPurchasesResponseBody>(response);
 }
 
 export async function postPurchases({ id, purchase }: { id: string, purchase: PostPurchasesRequestBody }) {
@@ -38,7 +45,7 @@ export async function postPurchases({ id, purchase }: { id: string, purchase: Po
     method: "POST",
     body: JSON.stringify(purchase),
   });
-  return response.json() as Promise<PostPurchasesRequestBody>;
+  return processResponse<PostPurchasesRequestBody>(response);
 }
 
 export async function postRefund(shipment: PostRefundRequestBody) {
@@ -47,7 +54,7 @@ export async function postRefund(shipment: PostRefundRequestBody) {
     method: "POST",
     body: JSON.stringify(shipment),
   });
-  return response.json() as Promise<PostRefundResponseBody>;
+  return processResponse<PostRefundResponseBody>(response);
 }
 
 export default {
