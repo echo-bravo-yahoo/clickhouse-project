@@ -23,7 +23,7 @@ the project is split into two major parts, a stubbed backend server (in `./ext`)
     - tsconfig.json, specific overrides from the tsconfig-base.json for this ts project
   - _node_modules_, shared dependencies for both `./ext` and `./src`
   - _src_, the directory for the frontend; it includes all the same parts as ext, as well as:
-    - sdk.ts, tools for calling the backend (`./ext`) server
+    - _sdk.ts_, tools for calling the frontend (`./src`) and backend (`./ext`) servers
   - _tmp_, build and runtime artifacts
     - _build_, build artifacts
       - _src_

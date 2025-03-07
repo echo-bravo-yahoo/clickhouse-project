@@ -3,7 +3,7 @@ import type {
   Shipment as BackendShipments,
   GetCustomerResponseBody as BackendCustomer,
   Product as BackendProduct,
-} from "../sdk.types.js";
+} from "../sdk/ext.types.js";
 
 const __dirname = import.meta.dirname;
 import fs from "node:fs";

@@ -3,10 +3,10 @@ import type { ExternalPurchase } from "../db.js";
 import type {
   ProductPurchase as BackendProductPurchase,
   Product as BackendProduct,
-} from "../sdk.types.js";
+} from "../sdk/ext.types.js";
 
 type GetPurchasesRequestBody = undefined;
-type GetPurchasesResponseBody = ExternalPurchase[];
+export type GetPurchasesResponseBody = ExternalPurchase[];
 type GetPurchasesResponse = Response<GetPurchasesResponseBody, object>;
 type GetPurchasesRequest = Request<
   { customerId: string },
@@ -45,13 +45,13 @@ export interface Address {
   country: string;
 }
 
-interface PostPurchasesRequestBody {
+export interface PostPurchasesRequestBody {
   products: PurchaseProduct[];
   // used to 400 requests when a SKU price has changed during order
   expectedPreTaxTotal?: number;
   shippingAddress: Address;
 }
-type PostPurchasesResponseBody = ExternalPurchase;
+export type PostPurchasesResponseBody = ExternalPurchase;
 type PostPurchasesResponse = Response<PostPurchasesResponseBody, object>;
 type PostPurchasesRequest = Request<
   { customerId: string },

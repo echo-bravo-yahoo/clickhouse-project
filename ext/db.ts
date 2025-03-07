@@ -3,7 +3,7 @@ import type {
   GetProductResponseBody,
   PostShipmentRequestBody,
   PostShipmentResponseBody,
-} from "../src/sdk.types.js";
+} from "../src/sdk/ext.types.js";
 
 const __dirname = import.meta.dirname;
 const projectRoot = path.join(__dirname, "../../..");

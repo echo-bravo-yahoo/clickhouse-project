@@ -2,7 +2,7 @@ import type { Response, Request } from "express";
 import type {
   PostShipmentRequestBody,
   PostShipmentResponseBody,
-} from "../../src/sdk.types";
+} from "../../src/sdk/ext.types";
 
 type PostShipmentResponse = Response<PostShipmentResponseBody, object>;
 type PostShipmentRequest = Request<

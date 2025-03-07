@@ -14,7 +14,7 @@ import {
   isPutCreditRequest,
 } from "./credit.types.js";
 import { db } from "../db.js";
-import { getCustomer } from "../sdk.js";
+import { getCustomer } from "../sdk/ext.js";
 
 export async function determineCurrentCredit(
   customerId: string,

@@ -1,11 +1,11 @@
 import type { Response, Request } from "express";
 import { ExternalPurchaseProduct } from "../db";
 
-interface PostRefundRequestBody {
+export interface PostRefundRequestBody {
   purchaseId: string;
   itemsToRefund: ExternalPurchaseProduct[];
 }
-interface PostRefundResponseBody {
+export interface PostRefundResponseBody {
   adjustment: number;
 }
 type PostRefundResponse = Response<PostRefundResponseBody, object>;

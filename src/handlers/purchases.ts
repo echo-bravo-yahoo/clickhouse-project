@@ -17,9 +17,9 @@ import {
   isGetPurchasesRequest,
   isPostPurchasesRequest,
 } from "./purchases.types.js";
-import { getProduct, postShipment } from "../sdk.js";
+import { getProduct, postShipment } from "../sdk/ext.js"
 import { adjustBalance, determineCurrentCredit } from "./credit.js";
-import { PostShipmentResponseBody } from "../sdk.types.js";
+import { PostShipmentResponseBody } from "../sdk/ext.types.js"
 
 export const getPurchases: GetPurchasesHandler = async (req, res) => {
   if (!isGetPurchasesRequest(req)) throw new Error(`Invalid input.`);

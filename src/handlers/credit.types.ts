@@ -6,8 +6,8 @@ export interface CreditResponseBody {
 }
 
 // GET /customers/:customerId/credit
-type GetCreditRequestBody = undefined;
-type GetCreditResponse = Response<CreditResponseBody, object>;
+export type GetCreditRequestBody = undefined;
+export type GetCreditResponse = Response<CreditResponseBody, object>;
 type GetCreditRequest = Request<
   { customerId: string },
   CreditResponseBody,
@@ -23,10 +23,10 @@ export function isGetCreditRequest(req: Request): req is GetCreditRequest {
 }
 
 // POST /customers/:customerId/credit
-interface PostCreditRequestBody {
+export interface PostCreditRequestBody {
   adjustment: number;
 }
-type PostCreditResponse = Response<CreditResponseBody, object>;
+export type PostCreditResponse = Response<CreditResponseBody, object>;
 type PostCreditRequest = Request<
   { customerId: string },
   CreditResponseBody,
@@ -48,10 +48,10 @@ export function isPostCreditRequest(req: Request): req is PostCreditRequest {
 }
 
 // PUT /customers/:customerId/credit
-interface PutCreditRequestBody {
+export interface PutCreditRequestBody {
   balance: number;
 }
-type PutCreditResponse = Response<CreditResponseBody, object>;
+export type PutCreditResponse = Response<CreditResponseBody, object>;
 type PutCreditRequest = Request<
   { customerId: string },
   CreditResponseBody,

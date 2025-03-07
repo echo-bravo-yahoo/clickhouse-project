@@ -3,9 +3,9 @@ import {
   GetProductResponseBody,
   PostShipmentRequestBody,
   PostShipmentResponseBody,
-} from "./sdk.types";
+} from "./ext.types";
 
-import { backend } from "./config/config.js";
+import { backend } from "../config/config.js";
 const backendURL = `${backend.protocol}://${backend.url}:${backend.port}`;
 
 export async function getCustomer({ id }: { id: string }) {
